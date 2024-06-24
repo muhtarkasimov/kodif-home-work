@@ -13,23 +13,25 @@ The API provides a single endpoint `/api/cd` that accepts a POST request with a 
 
 ## Installation
 1. Clone the repository:
-```bash
-git clone <repository_url>
-```
+    ```bash
+    git clone <repository_url>
+    ```
 2. Navigate to the project directory:
-```bash
-cd backend
-```
-3.	Build the project:
-```bash
-mvn clean install
-```
+    ```bash
+    cd backend
+    ```
+3. Build the project:
+    ```bash
+    mvn clean install
+    ```
+
 ## Usage
 1. Start the server:
-```bash
-mvn spring-boot:run
-```
+    ```bash
+    mvn spring-boot:run
+    ```
 2.	The server will start on port 8080 by default. You can test the endpoint using a tool like curl or Postman.
+
 #### Example Request
 ```bash
 curl -X POST http://localhost:8080/api/cd -H "Content-Type: application/json" -d '{"command": "cd /bar"}'
