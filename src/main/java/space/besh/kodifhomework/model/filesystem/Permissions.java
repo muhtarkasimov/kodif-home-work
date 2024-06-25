@@ -1,4 +1,4 @@
-package space.besh.kodifhomework.model;
+package space.besh.kodifhomework.model.filesystem;
 
 import lombok.AccessLevel;
 import lombok.Data;

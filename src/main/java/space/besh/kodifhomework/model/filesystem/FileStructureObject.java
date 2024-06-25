@@ -1,17 +1,18 @@
-package space.besh.kodifhomework.model;
+package space.besh.kodifhomework.model.filesystem;
 
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import space.besh.kodifhomework.model.enums.NodeType;
 
 import java.security.Permissions;
 
-@Data
+@Setter
+@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public abstract class Node {
+public abstract class FileStructureObject {
 
-    NodeType nodeType;
+    String name;
     Permissions ownerPermissions;
     Permissions groupPermissions;
     Permissions otherPermissions;
