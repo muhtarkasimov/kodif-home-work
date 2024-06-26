@@ -37,6 +37,6 @@ public class DirectoryObject extends FileStructureObject {
                 return child;
             }
         }
-        throw new InvalidInputException(name);
+        return null;
     }
 }

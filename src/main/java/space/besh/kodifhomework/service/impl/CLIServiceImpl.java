@@ -5,6 +5,7 @@ import space.besh.kodifhomework.exceptions.InvalidCDCommandException;
 import space.besh.kodifhomework.exceptions.InvalidInputException;
 import space.besh.kodifhomework.model.CommandResponse;
 import space.besh.kodifhomework.model.filesystem.DirectoryObject;
+import space.besh.kodifhomework.model.filesystem.FileObject;
 import space.besh.kodifhomework.model.filesystem.FileStructureObject;
 import space.besh.kodifhomework.service.CLIService;
 
@@ -36,22 +37,22 @@ public class CLIServiceImpl implements CLIService {
     }
 
     @Override
-    public CommandResponse cd(String path) {
+    public CommandResponse cd(String value) {
         try {
-            if (isCommandStartsFromRoot(path)) {
+            if (isCommandStartsFromRoot(value)) {
                 //TODO complete
                 return new CommandResponse("this command is not completed yet");
             } else {
-                FileStructureObject tempDir = new DirectoryObject(path, currentDirectory);
+                FileStructureObject tempDir = new DirectoryObject(value, currentDirectory);
                 if (currentDirectory.getChildren().contains(tempDir)) {
-                    if (currentDirectory.getChild(path) instanceof DirectoryObject) {
-                        currentDirectory = (DirectoryObject) currentDirectory.getChild(path);
+                    if (currentDirectory.getChild(value) instanceof DirectoryObject) {
+                        currentDirectory = (DirectoryObject) currentDirectory.getChild(value);
                         return new CommandResponse(null);
                     } else {
-                        return new CommandResponse(new InvalidCDCommandException(path).getMessage());
+                        return new CommandResponse(new InvalidCDCommandException(value).getMessage());
                     }
                 } else {
-                    return new CommandResponse(new InvalidCDCommandException(path).getMessage());
+                    return new CommandResponse(new InvalidCDCommandException(value).getMessage());
                 }
             }
         } catch (InvalidInputException e) {
@@ -60,8 +61,20 @@ public class CLIServiceImpl implements CLIService {
     }
 
     @Override
-    public CommandResponse rm() {
-        return null;
+    public CommandResponse rm(String value) { //rm is for files
+        //TODO test
+        //todo check if it is file
+        if (isCommandStartsFromRoot(value)) {
+            return null; //TODO handle
+        } else {
+            FileStructureObject child = currentDirectory.getChild(value);
+            if (child != null) {
+                currentDirectory.removeChild(child);
+                return new CommandResponse(null);
+            } else {
+                return new CommandResponse("rm: cannot remove '" + value + "': No such file or directory");
+            }
+        }
     }
 
     @Override
@@ -77,17 +90,35 @@ public class CLIServiceImpl implements CLIService {
     }
 
     @Override
-    public CommandResponse mkdir() {
+    public CommandResponse mkdir(String value) {
+        //TODO test
+        //TODO check if it starts with /
+        currentDirectory.addChild(new DirectoryObject(value, currentDirectory));
+
+        //TODO finish
         return null;
     }
 
     @Override
-    public CommandResponse rmdir() {
-        return null;
+    public CommandResponse rmdir(String value) { // rmdir is only for directories
+        if (isCommandStartsFromRoot(value)) {
+            return null; //TODO handle
+        } else {
+            FileStructureObject child = currentDirectory.getChild(value);
+            if (child != null) {
+                currentDirectory.removeChild(child);
+                return new CommandResponse(null);
+            } else {
+                return new CommandResponse("rmdir: failed to remove '" + value + "': No such file or directory");
+            }
+        }
     }
 
     @Override
-    public CommandResponse touch() {
+    public CommandResponse touch(String name) { // to create file
+        //TODO test
+        currentDirectory.addChild(new FileObject(name, currentDirectory));
+        //TODO finish
         return null;
     }
 

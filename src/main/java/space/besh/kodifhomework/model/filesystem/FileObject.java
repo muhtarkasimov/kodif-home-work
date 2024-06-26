@@ -10,11 +10,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FileObject extends FileStructureObject {
 
-    String extension;
+//    String extension;
 
-    public FileObject(String name, DirectoryObject parent, String extension) {
+//    public FileObject(String name, DirectoryObject parent, String extension) {
+//        super(name, parent);
+//        this.extension = extension;
+//    }
+
+
+    public FileObject(String name, DirectoryObject parent) {
         super(name, parent);
-        this.extension = extension;
     }
-
 }

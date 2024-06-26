@@ -4,18 +4,18 @@ import space.besh.kodifhomework.model.CommandResponse;
 
 public interface CLIService {
 
-    CommandResponse cd(String path);
+    CommandResponse cd(String value);
 
-    CommandResponse rm();
+    CommandResponse rm(String value);
 
     CommandResponse ls();
 
     CommandResponse pwd();
 
-    CommandResponse mkdir();
+    CommandResponse mkdir(String value);
 
-    CommandResponse rmdir();
+    CommandResponse rmdir(String value);
 
-    CommandResponse touch();
+    CommandResponse touch(String value);
 
 }
