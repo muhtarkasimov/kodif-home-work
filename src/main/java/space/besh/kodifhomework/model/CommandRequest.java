@@ -9,5 +9,6 @@ import lombok.experimental.FieldDefaults;
 public class CommandRequest {
 
     String command;
+    String payload;
 
 }

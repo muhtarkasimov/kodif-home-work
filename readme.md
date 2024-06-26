@@ -34,11 +34,11 @@ The API provides a single endpoint `/api/cd` that accepts a POST request with a 
 
 #### Example Request
 ```bash
-curl -X POST http://localhost:8080/api/cd -H "Content-Type: application/json" -d '{"command": "cd /bar"}'
+curl -X POST http://localhost:8080/api/execute -H "Content-Type: application/json" -d '{"command": "cd", "payload": "bar"}'
 ```
 #### Example Response
 ```json
 {
-   "cwd": "/bar"
+   "cwd": ""
 }   
 ```

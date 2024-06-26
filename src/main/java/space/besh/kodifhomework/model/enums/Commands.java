@@ -1,5 +1,10 @@
 package space.besh.kodifhomework.model.enums;
 
+import lombok.Getter;
+
+import java.lang.annotation.Annotation;
+
+@Getter
 public enum Commands {
 
     CD("cd"),       // change directory
@@ -14,10 +19,6 @@ public enum Commands {
 
     Commands(String code) {
         this.code = code;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public static Commands fromCode(String code) {

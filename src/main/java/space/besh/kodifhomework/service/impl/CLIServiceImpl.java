@@ -40,22 +40,22 @@ public class CLIServiceImpl implements CLIService {
         try {
             if (isCommandStartsFromRoot(path)) {
                 //TODO complete
-                return new CommandResponse(generateHeader(), "this command is not completed yet");
+                return new CommandResponse("this command is not completed yet");
             } else {
                 FileStructureObject tempDir = new DirectoryObject(path, currentDirectory);
                 if (currentDirectory.getChildren().contains(tempDir)) {
                     if (currentDirectory.getChild(path) instanceof DirectoryObject) {
                         currentDirectory = (DirectoryObject) currentDirectory.getChild(path);
-                        return new CommandResponse(generateHeader(), "");
+                        return new CommandResponse(null);
                     } else {
-                        return new CommandResponse(generateHeader(), new InvalidCDCommandException(path).getMessage());
+                        return new CommandResponse(new InvalidCDCommandException(path).getMessage());
                     }
                 } else {
-                    return new CommandResponse(generateHeader(), new InvalidCDCommandException(path).getMessage());
+                    return new CommandResponse(new InvalidCDCommandException(path).getMessage());
                 }
             }
         } catch (InvalidInputException e) {
-            return new CommandResponse(generateHeader(), new InvalidCDCommandException(e.getMessage()).getMessage());
+            return new CommandResponse(new InvalidCDCommandException(e.getMessage()).getMessage());
         }
     }
 
@@ -66,14 +66,14 @@ public class CLIServiceImpl implements CLIService {
 
     @Override
     public CommandResponse ls() {
-        return new CommandResponse(generateHeader(), currentDirectory.getChildren().stream()
+        return new CommandResponse(currentDirectory.getChildren().stream()
                 .map(FileStructureObject::getName)
                 .collect(Collectors.joining("\n")));
     }
 
     @Override
     public CommandResponse pwd() {
-        return new CommandResponse(generateHeader(), currentDirectory.pwd());
+        return new CommandResponse(currentDirectory.pwd());
     }
 
     @Override
