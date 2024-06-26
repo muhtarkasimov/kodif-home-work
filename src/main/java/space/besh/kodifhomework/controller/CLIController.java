@@ -22,14 +22,19 @@ public class CLIController {
     public ResponseEntity<String> executeCommand(@RequestBody String command) {
 
         validateInputOrElseThrowException(command);
-        cliService.cd();
+        cliService.cd(null); //TODO complete
 
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("/ls")
-    public ResponseEntity<String> executeCommand() {
+    public ResponseEntity<String> ls() {
         return ResponseEntity.ok(cliService.ls());
+    }
+
+    @GetMapping("/pwd")
+    public ResponseEntity<String> pwd() {
+        return ResponseEntity.ok(cliService.pwd());
     }
 
     private void validateInputOrElseThrowException(String command) {

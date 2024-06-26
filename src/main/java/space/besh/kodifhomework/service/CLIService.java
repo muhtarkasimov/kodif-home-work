@@ -2,13 +2,13 @@ package space.besh.kodifhomework.service;
 
 public interface CLIService {
 
-    void cd();
+    void cd(String path);
 
     void rm();
 
     String ls();
 
-    void pwd();
+    String pwd();
 
     void mkdir();
 
