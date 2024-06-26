@@ -1,6 +1,7 @@
 package space.besh.kodifhomework.model.filesystem;
 
 import lombok.Getter;
+import space.besh.kodifhomework.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +32,11 @@ public class DirectoryObject extends FileStructureObject {
     }
 
     public FileStructureObject getChild(String name) {
-//        for (FileStructureObject child : children) {
-//            if (child.getName().equals(name)) {
-//                return child;
-//            } else {
-//
-//            }
-//        }
-        return null;
+        for (FileStructureObject child : children) {
+            if (child.getName().equals(name)) {
+                return child;
+            }
+        }
+        throw new InvalidInputException(name);
     }
 }

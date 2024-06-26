@@ -1,19 +1,21 @@
 package space.besh.kodifhomework.service;
 
+import space.besh.kodifhomework.model.CommandResponse;
+
 public interface CLIService {
 
-    void cd(String path);
+    CommandResponse cd(String path);
 
-    void rm();
+    CommandResponse rm();
 
-    String ls();
+    CommandResponse ls();
 
-    String pwd();
+    CommandResponse pwd();
 
-    void mkdir();
+    CommandResponse mkdir();
 
-    void rmdir();
+    CommandResponse rmdir();
 
-    void touch();
+    CommandResponse touch();
 
 }
