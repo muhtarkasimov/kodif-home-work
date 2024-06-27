@@ -130,8 +130,15 @@ public class CLIServiceImpl implements CLIService {
         } else {
             FileStructureObject child = currentDirectory.getChild(value);
             if (child != null) {
-                currentDirectory.removeChild(child);
-                return new CommandResponse(null, currentDirectory.pwd());
+                if (child instanceof DirectoryObject) {
+                    if (((DirectoryObject) child).getChildren() != null) {
+                        return new CommandResponse("rmdir: " + value + ": Directory not empty", currentDirectory.pwd());
+                    }
+                    currentDirectory.removeChild(child);
+                    return new CommandResponse(null, currentDirectory.pwd());
+                } else {
+                    return new CommandResponse("rmdir: not a directory: " + value, currentDirectory.pwd());
+                }
             } else {
                 return new CommandResponse("rmdir: failed to remove '" + value + "': No such file or directory", currentDirectory.pwd());
             }
