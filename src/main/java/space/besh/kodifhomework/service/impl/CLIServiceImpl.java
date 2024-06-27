@@ -38,6 +38,9 @@ public class CLIServiceImpl implements CLIService {
 
     @Override
     public CommandResponse cd(String value) {
+        if (value == null) {
+            return new CommandResponse(null, currentDirectory.pwd());
+        }
         try {
             if (isCommandStartsFromRoot(value)) {
                 //TODO complete
