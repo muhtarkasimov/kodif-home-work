@@ -108,7 +108,7 @@ public class CLIServiceImpl implements CLIService {
                 for (int i = 1; i < split.length; i++) {
                     FileStructureObject child = node.getChild(split[i]);
                     if (child == null && i == split.length - 1) {
-                        node.addChild(child = new DirectoryObject(split[i], node));
+                        node.addChild(new DirectoryObject(split[i], node));
                         return new CommandResponse(null, currentDirectory.pwd());
                     }
                     node = (DirectoryObject) child;
