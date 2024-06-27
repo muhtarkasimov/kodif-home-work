@@ -58,7 +58,7 @@ public class CLIServiceImpl implements CLIService {
                             currentDirectory = (DirectoryObject) currentDirectory.getChild(value);
                             return new CommandResponse(null, currentDirectory.pwd());
                         } else {
-                            return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
+                            return new CommandResponse("cd: not a directory: " + value, currentDirectory.pwd());
                         }
                     } else {
                         return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
@@ -71,7 +71,7 @@ public class CLIServiceImpl implements CLIService {
     }
 
     @Override
-    public CommandResponse rm(String value) { //rm is for files
+    public CommandResponse rm(String value) { // The rm command removes complete directories, including subdirectories and files.
         //TODO test
         //todo check if it is file
         if (isCommandStartsFromRoot(value)) {
@@ -110,7 +110,7 @@ public class CLIServiceImpl implements CLIService {
     }
 
     @Override
-    public CommandResponse rmdir(String value) { // rmdir is only for directories
+    public CommandResponse rmdir(String value) { // The rmdir command removes empty directories
         if (isCommandStartsFromRoot(value)) {
             return null; //TODO handle
         } else {
@@ -126,10 +126,8 @@ public class CLIServiceImpl implements CLIService {
 
     @Override
     public CommandResponse touch(String name) { // to create file
-        //TODO test
         currentDirectory.addChild(new FileObject(name, currentDirectory));
-        //TODO finish
-        return null;
+        return new CommandResponse(null, currentDirectory.pwd());
     }
 
     private boolean isCommandStartsFromRoot(String command) {
