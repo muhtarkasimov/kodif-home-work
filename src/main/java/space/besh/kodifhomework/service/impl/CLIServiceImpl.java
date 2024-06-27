@@ -101,12 +101,13 @@ public class CLIServiceImpl implements CLIService {
 
     @Override
     public CommandResponse mkdir(String value) {
-        //TODO test
-        //TODO check if it starts with /
-        currentDirectory.addChild(new DirectoryObject(value, currentDirectory));
-
-        //TODO finish
-        return null;
+        if (isCommandStartsFromRoot(value)) {
+            //TODO implement
+            return null;
+        } else {
+            currentDirectory.addChild(new DirectoryObject(value, currentDirectory));
+            return new CommandResponse(null, currentDirectory.pwd());
+        }
     }
 
     @Override
