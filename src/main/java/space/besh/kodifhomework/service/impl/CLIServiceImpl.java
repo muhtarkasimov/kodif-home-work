@@ -43,10 +43,10 @@ public class CLIServiceImpl implements CLIService {
                 //TODO complete
                 return getCommandNotFoundResponse(value);
             } else {
-                if ("..".equals(value) && currentDirectory != root) {
-                    currentDirectory = currentDirectory.getParent();
+                if ("..".equals(value) && currentDirectory == root) {
                     return new CommandResponse(null, currentDirectory.pwd());
-                } else if ("..".equals(value) && currentDirectory == root) {
+                } else if ("..".equals(value)) {
+                    currentDirectory = currentDirectory.getParent();
                     return new CommandResponse(null, currentDirectory.pwd());
                 } else {
                     FileStructureObject tempDir = new DirectoryObject(value, currentDirectory);
