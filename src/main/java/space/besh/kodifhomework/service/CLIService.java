@@ -18,4 +18,6 @@ public interface CLIService {
 
     CommandResponse touch(String value);
 
+    CommandResponse getCommandNotFoundResponse(String payload);
+
 }

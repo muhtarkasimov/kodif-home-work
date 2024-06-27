@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommandRequest {
 
-    String command;
     String payload;
 
 }

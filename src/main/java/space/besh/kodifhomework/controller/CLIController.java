@@ -13,6 +13,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class CLIController {
 
     final CLIService cliService;
@@ -23,25 +24,41 @@ public class CLIController {
 
     @PostMapping(value = "/execute", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CommandResponse> executeCommand(@RequestBody CommandRequest request) {
-        String command = request.getCommand().split(" ")[0];
-        String payload = request.getPayload();
+        String command = request.getPayload().trim().split(" ")[0];
+        String payload = null;
+        if (request.getPayload().trim().split(" ").length > 1) {
+            payload = request.getPayload().trim().split(" ")[1];
+        }
 
-        switch (Commands.fromCode(command)) {
-            case CD -> {
-                return ResponseEntity.ok(cliService.cd(payload));
+        try {
+            switch (Commands.fromCode(command)) {
+                case CD -> {
+                    return ResponseEntity.ok(cliService.cd(payload));
+                }
+                case LS -> {
+                    return ResponseEntity.ok(cliService.ls());
+                }
+                case RM -> {
+                    return ResponseEntity.ok(cliService.rm(payload));
+                }
+                case PWD -> {
+                    return ResponseEntity.ok(cliService.pwd());
+                }
+                case MKDIR -> {
+                    return ResponseEntity.ok(cliService.mkdir(payload));
+                }
+                case RMDIR -> {
+                    return ResponseEntity.ok(cliService.rmdir(payload));
+                }
+                case TOUCH -> {
+                    return ResponseEntity.ok(cliService.touch(payload));
+                }
+                default -> {
+                    return ResponseEntity.ok(cliService.getCommandNotFoundResponse(payload));
+                }
             }
-            case LS -> {
-                return ResponseEntity.ok(cliService.ls());
-            }
-            case RM, MKDIR, RMDIR, TOUCH -> {
-                return ResponseEntity.ok(new CommandResponse("this command is not ready yet"));
-            }
-            case PWD -> {
-                return ResponseEntity.ok(cliService.pwd());
-            }
-            default -> {
-                return ResponseEntity.ok(new CommandResponse("bash: " + command + ": command not found"));
-            }
+        } catch (Exception e) {
+            return ResponseEntity.ok(cliService.getCommandNotFoundResponse(payload));
         }
     }
 

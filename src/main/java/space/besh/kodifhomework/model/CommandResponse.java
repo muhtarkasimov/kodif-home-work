@@ -13,4 +13,5 @@ public class CommandResponse {
 
     @JsonProperty("cwd")
     String payload;
+    String pwd;
 }

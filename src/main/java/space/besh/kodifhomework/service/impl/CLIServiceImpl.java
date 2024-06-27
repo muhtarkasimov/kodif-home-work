@@ -41,22 +41,27 @@ public class CLIServiceImpl implements CLIService {
         try {
             if (isCommandStartsFromRoot(value)) {
                 //TODO complete
-                return new CommandResponse("this command is not completed yet");
+                return getCommandNotFoundResponse(value);
             } else {
+                if ("..".equals(value)) {
+                    currentDirectory = currentDirectory.getParent();
+                    return new CommandResponse(null, currentDirectory.pwd());
+                }
+
                 FileStructureObject tempDir = new DirectoryObject(value, currentDirectory);
                 if (currentDirectory.getChildren().contains(tempDir)) {
                     if (currentDirectory.getChild(value) instanceof DirectoryObject) {
                         currentDirectory = (DirectoryObject) currentDirectory.getChild(value);
-                        return new CommandResponse(null);
+                        return new CommandResponse(null, currentDirectory.pwd());
                     } else {
-                        return new CommandResponse(new InvalidCDCommandException(value).getMessage());
+                        return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
                     }
                 } else {
-                    return new CommandResponse(new InvalidCDCommandException(value).getMessage());
+                    return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
                 }
             }
         } catch (InvalidInputException e) {
-            return new CommandResponse(new InvalidCDCommandException(e.getMessage()).getMessage());
+            return new CommandResponse(new InvalidCDCommandException(e.getMessage()).getMessage(), currentDirectory.pwd());
         }
     }
 
@@ -70,9 +75,9 @@ public class CLIServiceImpl implements CLIService {
             FileStructureObject child = currentDirectory.getChild(value);
             if (child != null) {
                 currentDirectory.removeChild(child);
-                return new CommandResponse(null);
+                return new CommandResponse(null, currentDirectory.pwd());
             } else {
-                return new CommandResponse("rm: cannot remove '" + value + "': No such file or directory");
+                return new CommandResponse("rm: cannot remove '" + value + "': No such file or directory", currentDirectory.pwd());
             }
         }
     }
@@ -81,12 +86,12 @@ public class CLIServiceImpl implements CLIService {
     public CommandResponse ls() {
         return new CommandResponse(currentDirectory.getChildren().stream()
                 .map(FileStructureObject::getName)
-                .collect(Collectors.joining("\n")));
+                .collect(Collectors.joining("\n")), currentDirectory.pwd());
     }
 
     @Override
     public CommandResponse pwd() {
-        return new CommandResponse(currentDirectory.pwd());
+        return new CommandResponse(currentDirectory.pwd(), currentDirectory.pwd());
     }
 
     @Override
@@ -107,9 +112,9 @@ public class CLIServiceImpl implements CLIService {
             FileStructureObject child = currentDirectory.getChild(value);
             if (child != null) {
                 currentDirectory.removeChild(child);
-                return new CommandResponse(null);
+                return new CommandResponse(null, currentDirectory.pwd());
             } else {
-                return new CommandResponse("rmdir: failed to remove '" + value + "': No such file or directory");
+                return new CommandResponse("rmdir: failed to remove '" + value + "': No such file or directory", currentDirectory.pwd());
             }
         }
     }
@@ -128,5 +133,9 @@ public class CLIServiceImpl implements CLIService {
 
     private String generateHeader() { //todo move to frontend
         return user + "@" + device + " " + currentDirectory.pwd();
+    }
+
+    public CommandResponse getCommandNotFoundResponse(String payload) {
+        return new CommandResponse("bash: " + payload + ": command not found", currentDirectory.pwd());
     }
 }
