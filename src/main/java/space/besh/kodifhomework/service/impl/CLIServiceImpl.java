@@ -43,21 +43,23 @@ public class CLIServiceImpl implements CLIService {
                 //TODO complete
                 return getCommandNotFoundResponse(value);
             } else {
-                if ("..".equals(value)) {
+                if ("..".equals(value) && currentDirectory != root) {
                     currentDirectory = currentDirectory.getParent();
                     return new CommandResponse(null, currentDirectory.pwd());
-                }
-
-                FileStructureObject tempDir = new DirectoryObject(value, currentDirectory);
-                if (currentDirectory.getChildren().contains(tempDir)) {
-                    if (currentDirectory.getChild(value) instanceof DirectoryObject) {
-                        currentDirectory = (DirectoryObject) currentDirectory.getChild(value);
-                        return new CommandResponse(null, currentDirectory.pwd());
+                } else if ("..".equals(value) && currentDirectory == root) {
+                    return new CommandResponse(null, currentDirectory.pwd());
+                } else {
+                    FileStructureObject tempDir = new DirectoryObject(value, currentDirectory);
+                    if (currentDirectory.getChildren().contains(tempDir)) {
+                        if (currentDirectory.getChild(value) instanceof DirectoryObject) {
+                            currentDirectory = (DirectoryObject) currentDirectory.getChild(value);
+                            return new CommandResponse(null, currentDirectory.pwd());
+                        } else {
+                            return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
+                        }
                     } else {
                         return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
                     }
-                } else {
-                    return new CommandResponse(new InvalidCDCommandException(value).getMessage(), currentDirectory.pwd());
                 }
             }
         } catch (InvalidInputException e) {
