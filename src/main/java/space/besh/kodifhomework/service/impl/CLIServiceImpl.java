@@ -102,8 +102,21 @@ public class CLIServiceImpl implements CLIService {
     @Override
     public CommandResponse mkdir(String value) {
         if (isCommandStartsFromRoot(value)) {
-            //TODO implement
-            return null;
+            try {
+                String[] split = value.split("/");
+                DirectoryObject node = root;
+                for (int i = 1; i < split.length; i++) {
+                    FileStructureObject child = node.getChild(split[i]);
+                    if (child == null && i == split.length - 1) {
+                        node.addChild(child = new DirectoryObject(split[i], node));
+                        return new CommandResponse(null, currentDirectory.pwd());
+                    }
+                    node = (DirectoryObject) child;
+                }
+                return new CommandResponse(null, currentDirectory.pwd());
+            } catch (Exception e) {
+                return new CommandResponse("mkdir: not a directory: " + value, currentDirectory.pwd());
+            }
         } else {
             currentDirectory.addChild(new DirectoryObject(value, currentDirectory));
             return new CommandResponse(null, currentDirectory.pwd());
