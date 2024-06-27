@@ -131,7 +131,7 @@ public class CLIServiceImpl implements CLIService {
             FileStructureObject child = currentDirectory.getChild(value);
             if (child != null) {
                 if (child instanceof DirectoryObject) {
-                    if (((DirectoryObject) child).getChildren() != null) {
+                    if (!((DirectoryObject) child).getChildren().isEmpty()) {
                         return new CommandResponse("rmdir: " + value + ": Directory not empty", currentDirectory.pwd());
                     }
                     currentDirectory.removeChild(child);
